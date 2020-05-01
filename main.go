@@ -26,7 +26,11 @@ func main() {
 		fmt.Println(err)
 	}
 	f.SetColWidth("Sheet1", "D", "D", 20)
-	style, err := f.NewStyle(`{"fill":{"type":"pattern","color":["#0040FF"],"pattern":1}}`)
+	style1, err := f.NewStyle(`{"fill":{"type":"pattern","color":["#0040FF"],"pattern":1}, "font": {"color":"#777777", "family":"Times New Roman"}}`)
+	if err != nil {
+		println(err.Error())
+	}
+	style2, err := f.NewStyle(`{"font": {"color":"#777777", "family":"Sarai"}}`)
 	if err != nil {
 		println(err.Error())
 	}
@@ -37,11 +41,16 @@ func main() {
 
 	// DropDown
 	dvRange := excelize.NewDataValidation(true)
-	dvRange.Sqref = "A1:A2"
+	dvRange.Sqref = "A4:A4"
 	dvRange.SetSqrefDropList("$E$1:$E$3", true)
 	f.AddDataValidation("Sheet1", dvRange)
 
-	f.SetCellStyle("Sheet1", "A1", "B3", style)
+	f.SetCellValue("Sheet1", "A6", "some text")
+
+	f.SetCellStyle("Sheet1", "A1", "A2", style1)
+
+	f.SetCellStyle("Sheet1", "B1", "B2", style2)
+
 	// Save xlsx file by the given path.
 	if err := f.SaveAs("Book1.xlsx"); err != nil {
 		fmt.Println(err)
